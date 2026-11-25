@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 
 const MAX_CHARS = 200;
 
@@ -22,6 +23,10 @@ if (failures.length > 0) {
   for (const f of failures) console.error(`FAIL: ${f}`);
   process.exit(1);
 }
+
+const outputDir = process.env.MAKEFUN_OUTPUT_DIR || "/output";
+mkdirSync(outputDir, { recursive: true });
+writeFileSync(join(outputDir, "entry.txt"), line + "\n");
 
 console.log(line);
 console.log(`OK: ${[...line].length}/${MAX_CHARS} characters, single line, clean pun delivered.`);
