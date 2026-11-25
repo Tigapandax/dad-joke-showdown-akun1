@@ -12,6 +12,10 @@ if (line !== line.trim()) failures.push("leading or trailing whitespace");
 if (line.includes("\r")) failures.push("carriage return found");
 if (line.includes("\n")) failures.push("more than one line");
 if (/\s{2,}/.test(line)) failures.push("double space inside the line");
+if (/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/.test(line)) failures.push("control character inside the line");
+const quotes = (line.match(/"/g) || []).length;
+if (quotes % 2 !== 0) failures.push("unbalanced double quotes");
+if (!/\s/.test(line)) failures.push("a joke needs more than one word");
 if (!/[.!?]["']?$/.test(line)) failures.push("must end with terminal punctuation");
 
 if (failures.length > 0) {
